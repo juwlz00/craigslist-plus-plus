@@ -4,6 +4,7 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const auth = require("./api/auth");
 const buyer = require("./api/buyer");
+const seller = require("./api/seller");
 const app = express();
 
 // Server Configurations
@@ -19,6 +20,7 @@ app.use(session({
 // Routing API Endpoints
 app.use("/", auth);
 app.use("/", buyer);
+app.use("/", seller);
 
 // Index Route
 app.get("/", (req, res) => {
