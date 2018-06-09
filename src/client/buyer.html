@@ -9,8 +9,38 @@
 </head>
 <body class="bg-light">
     <div class="container-fluid">
+        <img src="img/craigslist.png">
         <h1 class="text-center text-dark font-weight-light">Craigslist++ Buyer Page</h1>
-
+        <h4>Filter</h4>
+        <form>
+                <label class="form-check-label" for="name">Product Name</label>
+                <input type="text" name="name" id="name">
+                <label class="form-check-label" for="category">Category</label>
+                <select name="category" id="category">
+                    <option value="automobiles">Automobiles</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="food">Food</option>
+                    <option value="gardening">Gardening</option>
+                </select>
+                <label class="form-check-label" for="description">Description:</label>
+                <input type="text" name="description" id="description" size="50">
+                <br>
+                <label class="form-check-label" for="condition">Condition</label>
+                <select name="condition" id="condition">
+                    <option value="new">New</option>
+                    <option value="mint">Mint</option>
+                    <option value="used">Used</option>
+                    <option value="poor">Poor</option>
+                </select>
+                <label class="form-check-label" for="price">Price</label>
+                <input type="text" name="price" id="price" size="10">
+                <select name="maxmin" id="maxmin">
+                    <label class="form-check-label" for="maxmin">Max/Min</label>
+                    <option value="max">Max</option>
+                    <option value="min">Min</option>
+                </select>
+                <button type="submit" class="btn btn-primary">search</button>
+        </form>
     </div>
 </body>
 </html>
