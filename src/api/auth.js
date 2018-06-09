@@ -2,8 +2,23 @@ const express = require('express');
 const router = express.Router();
 const db = require("../database/connection");
 
-// Routes
-router.post("/login", (req, res) => {
+// Helpers
+const authenticate = (userId, password, userType, next) => {
+    const userTable = userType === "buyer" ? "craigslist.buyer" : "craigslist.seller";
+    const sql = `SELECT * FROM ${userTable} WHERE userId="${userId}"`;
+    db.query(sql, (error, results) => {
+        if (error) {
+            next(error);
+        }
+        if (results[0] && results[0].password === password) {
+            next(null, userId, userType);
+        } else {
+            next(new Error("Auth failed"));
+        }
+    });
+};
+
+const handleLogin = (req, res) => {
     authenticate(
         req.body.userId,
         req.body.password,
@@ -20,28 +35,16 @@ router.post("/login", (req, res) => {
             }
         }
     );
-});
+};
 
-router.post("/logout", (req, res) => {
+const handleLogout = (req, res) => {
     req.session.destroy(() => {
         res.redirect("/");
     });
-});
-
-// Helpers
-const authenticate = (userId, password, userType, next) => {
-    const userTable = userType === "buyer" ? "craigslist.buyer" : "craigslist.seller";
-    const sql = `SELECT * FROM ${userTable} WHERE userId="${userId}"`;
-    db.query(sql, (error, results) => {
-        if (error) {
-            next(error);
-        }
-        if (results[0] && results[0].password === password) {
-            next(null, userId, userType);
-        } else {
-            next(new Error("Auth failed"));
-        }
-    });
 };
+
+// Routes
+router.post("/login", handleLogin);
+router.post("/logout", handleLogout);
 
 module.exports = router;
