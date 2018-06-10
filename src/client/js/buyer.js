@@ -4,7 +4,7 @@ $("#buyerSearch").submit(() => {
         type: "POST",
         data: $("#buyerSearch").serialize(),
         success: (response) => {
-            $("#mbox").html(response);
+            $("#result").html(response);
         }
     });
 });
