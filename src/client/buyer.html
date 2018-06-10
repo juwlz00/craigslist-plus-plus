@@ -60,9 +60,65 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" id="btnSearch">Submit</button>
         </form>
-    
+        
+        <hr/>
+        <h4>Get Receipt And Invoice For An Order</h4>
+        <form id="buyerReceipt">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="orderId">Order ID</label>
+                    <input type="text" name="orderId" class="form-control" id="orderId">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btnReceipt">Get Receipt</button>
+        </form>
+        
+         <hr/>
+        <h4>Get Sellers With Certain Reviews</h4>
+        <form id="buyerReview">
+            <input type="checkbox" name="stars" value="5">5 stars<br>
+            <input type="checkbox" name="stars" value="4">4 stars<br>
+            <input type="checkbox" name="stars" value="3">3 stars<br>
+            <input type="checkbox" name="stars" value="2">2 stars<br>
+            <input type="checkbox" name="stars" value="1">1 stars<br>
+            <input type="submit" value="Submit" class="btn btn-primary" id="btnReview">
+        </form>
+        
+         <hr/>
+        <h4>Show Number of Items from Each Product</h4>
+        <button type="submit" class="btn btn-primary" id="btnInventory">Show Inventory</button>
+        
+        <hr/>
+        <h4>Show Most Or Least Expensive Product On Average</h4>
+        <form id="buyerProductAvg">
+            <input type="radio" name="type" value="least">Least Expensive<br>
+            <input type="radio" name="type" value="most">Most Expensive<br>
+            <input type="submit" value="Submit" class="btn btn-primary" id="btnProductAvg">
+        </form>
+        
+        <hr/>
+        <h4>Show Best Or Worst Rated Seller On Average</h4>
+        <form id="buyerSellerAvg">
+            <input type="radio" name="rating" value="worst">Worst Rated<br>
+            <input type="radio" name="rating" value="best">Best Rated<br>
+            <input type="submit" value="Submit" class="btn btn-primary" id="btnShowSeller">
+        </form>
+        
+        <hr/>
+        <h4>Delete Order And Payment</h4>
+        <form id="buyerDeleteOrder">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="delOrderId">Order ID</label>
+                    <input type="text" name="delOrderId" class="form-control" id="delOrderId">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btnDelOrder">Delete</button>
+        </form>
+        
         <div id="result" name="result"></div>
+    </div>
 </body>
 </html>

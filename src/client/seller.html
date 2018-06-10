@@ -13,24 +13,27 @@
         <h1 class="text-center text-dark font-weight-light">Seller Page</h1>
         <hr/>
         
-        <button type="submit" class="btn btn-primary">Show user rating</button><br><br><hr/>
+        <h4>Show Seller Average Rating</h4>
+        <button type="submit" class="btn btn-primary" id="btnAvgRating">Show rating</button>
         
+        <hr/>
+        <h4>Update Unsold Item</h4>
         <form id="sellerUpdate">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="id">Item ID</label>
-                    <input type="text" name="id" class="form-control" id="id">
+                    <label for="updateId">Item ID</label>
+                    <input type="text" name="updateId" class="form-control" id="updateId">
                 </div>
                 
             </div>
             <div class="form-group">
-                <label for="description">New Item Description</label>
-                <input type="text" name="description" class="form-control" id="description">
+                <label for="newDescription">New Item Description</label>
+                <input type="text" name="newDescription" class="form-control" id="newDescription">
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="condition">New Item Condition</label>
-                    <select name="condition" class="custom-select" id="condition">
+                    <label for="newCondition">New Item Condition</label>
+                    <select name="newCondition" class="custom-select" id="newCondition">
                         <option selected></option>
                         <option value="new">New</option>
                         <option value="mint">Mint</option>
@@ -39,23 +42,25 @@
                     </select>
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="price">New Item Price</label>
-                    <input name="price" type="number" step="0.01" class="form-control" id="price">
+                    <label for="newPrice">New Item Price</label>
+                    <input name="newPrice" type="number" step="0.01" class="form-control" id="newPrice">
                 </div>
                 
             </div>
-            <button type="update" class="btn btn-primary">Update</button>
-        </form><br><br><hr/>
+            <button type="submit" class="btn btn-primary" id="btnUpdateItem">Update</button>
+        </form>
         
+        <hr/>
+        <h4>Delete Unsold Item</h4>
         <form id="sellerDelete">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="id">Item ID</label>
-                    <input type="text" name="id" class="form-control" id="id">
+                    <label for="deleteId">Item ID</label>
+                    <input type="text" name="deleteId" class="form-control" id="deleteId">
                 </div>
             </div>
             
-            <button type="delete" class="btn btn-primary">Delete</button>
+            <button type="submit" class="btn btn-primary" id="btnDeleteItem">Delete</button>
         </form>
         
         
