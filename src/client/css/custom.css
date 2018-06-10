@@ -1,0 +1,8 @@
+#result {
+    border: 2px solid;
+    padding: 10px; 
+    width: 100%;
+    resize: vertical;
+    overflow: auto;
+    margin: 5px 0px;
+}
