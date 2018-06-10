@@ -12,7 +12,53 @@
         <img src="img/craigslist.png" class="d-block mx-auto">
         <h1 class="text-center text-dark font-weight-light">Seller Page</h1>
         <hr/>
-
+        
+        <button type="submit" class="btn btn-primary">Show user rating</button><br><br><hr/>
+        
+        <form id="sellerUpdate">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="id">Item ID</label>
+                    <input type="text" name="id" class="form-control" id="id">
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="description">New Item Description</label>
+                <input type="text" name="description" class="form-control" id="description">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="condition">New Item Condition</label>
+                    <select name="condition" class="custom-select" id="condition">
+                        <option selected></option>
+                        <option value="new">New</option>
+                        <option value="mint">Mint</option>
+                        <option value="used">Used</option>
+                        <option value="poor">Poor</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="price">New Item Price</label>
+                    <input name="price" type="number" step="0.01" class="form-control" id="price">
+                </div>
+                
+            </div>
+            <button type="update" class="btn btn-primary">Update</button>
+        </form><br><br><hr/>
+        
+        <form id="sellerDelete">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="id">Item ID</label>
+                    <input type="text" name="id" class="form-control" id="id">
+                </div>
+            </div>
+            
+            <button type="delete" class="btn btn-primary">Delete</button>
+        </form>
+        
+        
     </div>
 </body>
 </html>
