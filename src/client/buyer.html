@@ -3,17 +3,19 @@
 <head>
     <title>Craigslist++</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/custom.css">
     <script defer src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script defer src="js/buyer.js"></script>
+    <script type="module" defer src="js/util.js"></script>
+    <script type="module" defer src="js/buyer.js"></script>
 </head>
 <body class="bg-light">
     <div class="container-fluid">
+
         <img src="img/craigslist.png" class="d-block mx-auto">
         <h1 class="text-center text-dark font-weight-light">Buyer Page</h1>
         <hr/>
+
         <h4>Search Products and Items</h4>
         <form id="buyerSearch">
             <div class="form-row">
@@ -62,8 +64,8 @@
             </div>
             <button type="submit" class="btn btn-primary" id="btnSearch">Submit</button>
         </form>
-        
         <hr/>
+
         <h4>Get Receipt And Invoice For An Order</h4>
         <form id="buyerReceipt">
             <div class="form-row">
@@ -74,8 +76,8 @@
             </div>
             <button type="submit" class="btn btn-primary" id="btnReceipt">Get Receipt</button>
         </form>
-        
-         <hr/>
+        <hr/>
+
         <h4>Get Sellers With Certain Reviews</h4>
         <form id="buyerReview">
             <input type="checkbox" name="stars" value="5">5 stars<br>
@@ -85,28 +87,28 @@
             <input type="checkbox" name="stars" value="1">1 stars<br>
             <input type="submit" value="Submit" class="btn btn-primary" id="btnReview">
         </form>
-        
-         <hr/>
+        <hr/>
+
         <h4>Show Number of Items from Each Product</h4>
         <button type="submit" class="btn btn-primary" id="btnInventory">Show Inventory</button>
-        
         <hr/>
+
         <h4>Show Most Or Least Expensive Product On Average</h4>
         <form id="buyerProductAvg">
             <input type="radio" name="type" value="least">Least Expensive<br>
             <input type="radio" name="type" value="most">Most Expensive<br>
             <input type="submit" value="Submit" class="btn btn-primary" id="btnProductAvg">
         </form>
-        
         <hr/>
+
         <h4>Show Best Or Worst Rated Seller On Average</h4>
         <form id="buyerSellerAvg">
             <input type="radio" name="rating" value="worst">Worst Rated<br>
             <input type="radio" name="rating" value="best">Best Rated<br>
             <input type="submit" value="Submit" class="btn btn-primary" id="btnShowSeller">
         </form>
-        
         <hr/>
+
         <h4>Delete Order And Payment</h4>
         <form id="buyerDeleteOrder">
             <div class="form-row">
@@ -117,8 +119,19 @@
             </div>
             <button type="submit" class="btn btn-primary" id="btnDelOrder">Delete</button>
         </form>
-        
-        <div id="result" name="result"></div>
+
+        <div class="modal fade" id="resultModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Results</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="result"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

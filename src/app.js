@@ -10,7 +10,7 @@ const app = express();
 // Server Configurations
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '/client')));
+app.use(express.static(path.join(__dirname, "/client")));
 app.use(session({
     secret: "candy",
     resave: false,
