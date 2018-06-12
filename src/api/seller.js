@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require('express');
 const router = express.Router();
+const db = require("../database/connection");
 
 // Seller Index Page
 router.get("/seller", (req, res) => {
@@ -16,7 +17,7 @@ const handleRating = (req, res) => {
     let resObj = {};
     let sql = `SELECT \`sellerId\` AS seller, AVG(\`stars\`) AS stars
                 FROM \`craigslist\`.\`seller\` AS s, \`craigslist\`.\`buyer\` AS b, \`craigslist\`.\`review\` AS r
-                WHERE r.buyerId = b.userId AND r.sellerId = s.userId AND s.sellerId = "${req.session.userId}"
+                WHERE r.buyerId = b.userId AND r.sellerId = s.userId AND s.userId = "${req.session.userId}"
                 GROUP BY \`sellerId\``;
     sql += `;`;
 
