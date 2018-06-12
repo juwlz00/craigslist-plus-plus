@@ -69,9 +69,27 @@ const handleReceipt = (req, res) => {
     });
 };
 
+const handleInventory = (req, res) => {
+    let resObj = {};
+    let sql = `SELECT \`name\`, COUNT(itemId) AS quantity
+        FROM \`craigslist\`.\`product\` AS p, \`craigslist\`.\`item\` AS i
+        WHERE p.productId = i.productId
+        GROUP BY \`name\``;
+    db.query(sql, (error, results) => {
+        if (error) {
+            resObj.error = "Couldn't get your request.";
+        } else {
+            resObj.colNames = ["name", "quantity"];
+            resObj.results = results;
+        }
+        res.send(resObj);
+    });
+};
+
 // Buyer API Endpoints
 router.post("/buyer/search", handleSearch);
 router.post("/buyer/receipt", handleReceipt);
+router.get("/buyer/inventory", handleInventory);
 
 // Buyer Index Page
 router.get("/buyer", (req, res) => {

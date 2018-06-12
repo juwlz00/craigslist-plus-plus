@@ -28,6 +28,19 @@ $("#buyerReceipt").submit((event) => {
     });
 });
 
+$("#buyerInventory").submit((event) => {
+    event.preventDefault();
+    $.ajax({
+        url: "/buyer/inventory",
+        type: "GET",
+        success: (response) => {
+            const resultHtml = generateTable(response);
+            $("#result").html(resultHtml);
+            $("#resultModal").modal();
+        }
+    });
+});
+
 $("#resultModal").on("hidden.bs.modal", () => {
     // clear the modal content on close
     $("#result").html("");
