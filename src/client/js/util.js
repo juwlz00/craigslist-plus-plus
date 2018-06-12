@@ -19,7 +19,7 @@ const generateTable = (resObj) => {
         html += `</tbody></table>`;
     } else {
         html += `<div class="alert alert-info" role="alert">
-        There is nothing in the database with the given constaints.
+            There is nothing in the database with the given constaints.
         </div>`
     }
     return html;
@@ -105,7 +105,7 @@ const generateReceipt = (resObj) => {
         `;
     } else {
         html += `<div class="alert alert-info" role="alert">
-        There is nothing in the database with the given constaints.
+            This Order Id does not exist.
         </div>`
     }
 
