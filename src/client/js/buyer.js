@@ -1,4 +1,4 @@
-import { generateTable } from "./util.js";
+import { generateTable, generateReceipt } from "./util.js";
 
 $("#buyerSearch").submit((event) => {
     event.preventDefault();
@@ -8,6 +8,20 @@ $("#buyerSearch").submit((event) => {
         data: $("#buyerSearch").serialize(),
         success: (response) => {
             const resultHtml = generateTable(response);
+            $("#result").html(resultHtml);
+            $("#resultModal").modal();
+        }
+    });
+});
+
+$("#buyerReceipt").submit((event) => {
+    event.preventDefault();
+    $.ajax({
+        url: "/buyer/receipt",
+        type: "POST",
+        data: $("#buyerReceipt").serialize(),
+        success: (response) => {
+            const resultHtml = generateReceipt(response);
             $("#result").html(resultHtml);
             $("#resultModal").modal();
         }
