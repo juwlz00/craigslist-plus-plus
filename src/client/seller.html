@@ -6,6 +6,8 @@
     <script defer src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script type="module" defer src="js/util.js"></script>
+    <script type="module" defer src="js/seller.js"></script>
 </head>
 <body class="bg-light">
     <div class="container-fluid">
@@ -14,7 +16,9 @@
         <hr/>
         
         <h4>Show Seller Average Rating</h4>
-        <button type="submit" class="btn btn-primary" id="btnAvgRating">Show rating</button>
+        <form id="sellerRating">
+            <button type="submit" class="btn btn-primary" id="btnAvgRating">Show rating</button>
+        </form>    
         
         <hr/>
         <h4>Update Unsold Item</h4>
