@@ -145,19 +145,19 @@ const handleAvgStars = (req, res) => {
                     FROM \`craigslist\`.\`avgReview\`
                     )`
     db.query(viewExistsSql, (error, results) => {
-        if(error) {
+        if (error) {
             resObj.error = "Couldn't get your request.";
             return res.send(resObj);
-        }else{
+        } else{
             db.query(createViewSql, (error, results) => {
-                if(error){
+                if (error) {
                     resObj.error = "Couldn't get your request.";
                     return res.send(resObj);
-                }else{
+                } else {
                     db.query(maxminSql, (error, results) => {
-                        if(error){
+                        if (error) {
                             resObj.error = "Couldn't get your request.";
-                        }else{
+                        } else {
                             resObj.colNames = ["sellerId", "avgStars"];
                             resObj.results = results;
                         }
@@ -195,6 +195,22 @@ const handleDeleteOrder = (req, res) =>{
 
 };
 
+const handleReviewCheck = (req, res) => {
+    let resObj = {};
+    let sql;
+    // check to see if req.body.stars is string (typeof req.body.stars === "string")
+    // or array (type is object)
+    db.query(sql, (error, results) => {
+        if (error) {
+            resObj.error = "Couldn't get your request.";
+        } else {
+            resObj.colNames = [];
+            resObj.results = results;
+        }
+        res.send(resObj);
+    });
+};
+
 // Buyer API Endpoints
 router.post("/buyer/search", handleSearch);
 router.post("/buyer/receipt", handleReceipt);
@@ -202,6 +218,7 @@ router.get("/buyer/inventory", handleInventory);
 router.post("/buyer/avgcost", handleAvgCost);
 router.post("/buyer/avgstar", handleAvgStars);
 router.post("/buyer/deleteorder", handleDeleteOrder);
+router.post("/buyer/reviewcheck", handleReviewCheck);
 
 // Buyer Index Page
 router.get("/buyer", (req, res) => {

@@ -84,6 +84,20 @@ $("#buyerDeleteOrder").submit((event) => {
     });
 });
 
+$("#buyerReviewCheck").submit((event) => {
+    event.preventDefault();
+    $.ajax({
+        url: "/buyer/reviewcheck",
+        type: "POST",
+        data: $("#buyerReviewCheck").serialize(),
+        success: (response) => {
+            // const resultHtml = generateTable(response);
+            // $("#result").html(resultHtml);
+            // $("#resultModal").modal();
+        }
+    });
+});
+
 $("#resultModal").on("hidden.bs.modal", () => {
     // clear the modal content on close
     $("#result").html("");

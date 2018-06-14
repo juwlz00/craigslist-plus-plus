@@ -41,3 +41,8 @@ $("#sellerDelete").submit((event) => {
         }
     });
 });
+
+$("#resultModal").on("hidden.bs.modal", () => {
+    // clear the modal content on close
+    $("#result").html("");
+});
