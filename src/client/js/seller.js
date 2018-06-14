@@ -13,3 +13,31 @@ $("#sellerRating").submit((event) => {
         }
     });
 });
+
+$("#sellerUpdate").submit((event) => {
+    event.preventDefault();
+    $.ajax({
+        url: "/seller/update",
+        type: "POST",
+        data: $("#sellerUpdate").serialize(),
+        success: (response) => {
+            const resultHtml = generateTable(response);
+            $("#result").html(resultHtml);
+            $("#resultModal").modal();
+        }
+    });
+});
+
+$("#sellerDelete").submit((event) => {
+    event.preventDefault();
+    $.ajax({
+        url: "/seller/delete",
+        type: "POST",
+        data: $("#sellerDelete").serialize(),
+        success: (response) => {
+            const resultHtml = generateTable(response);
+            $("#result").html(resultHtml);
+            $("#resultModal").modal();
+        }
+    });
+});
