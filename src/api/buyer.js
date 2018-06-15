@@ -57,8 +57,8 @@ const handleReceipt = (req, res) => {
                     resObj.error = "You do not have user access rights to this.";
                     res.send(resObj);
                 } else {
-                    db.query(itemsSql, (error, resultItems) => {
-                        if (error) {
+                    db.query(itemsSql, (er, resultItems) => {
+                        if (er) {
                             resObj.error = "Couldn't get your request.";
                         } else {
                             orderResults[0].items = resultItems;
@@ -129,15 +129,15 @@ const handleAvgCost = (req, res) => {
             resObj.error = "Couldn't get your request.";
             return res.send(resObj);
         }else{
-            db.query(createViewSql, (error, results) => {
-                if(error){
+            db.query(createViewSql, (error2, results) => {
+                if (error2) {
                     resObj.error = "Couldn't get your request.";
                     return res.send(resObj);
-                }else{
-                    db.query(maxminSql, (error, results) => {
-                        if(error){
+                } else {
+                    db.query(maxminSql, (error3, results) => {
+                        if (error3) {
                             resObj.error = "Couldn't get your request.";
-                        }else{
+                        } else {
                             resObj.colNames = ["name", "avgPrice"];
                             resObj.results = results;
                         }
@@ -170,13 +170,13 @@ const handleAvgStars = (req, res) => {
             resObj.error = "Couldn't get your request.";
             return res.send(resObj);
         } else{
-            db.query(createViewSql, (error, results) => {
-                if (error) {
+            db.query(createViewSql, (error2, results) => {
+                if (error2) {
                     resObj.error = "Couldn't get your request.";
                     return res.send(resObj);
                 } else {
-                    db.query(maxminSql, (error, results) => {
-                        if (error) {
+                    db.query(maxminSql, (error3, results) => {
+                        if (error3) {
                             resObj.error = "Couldn't get your request.";
                         } else {
                             resObj.colNames = ["sellerId", "avgStars"];
@@ -202,16 +202,16 @@ const handleDeleteOrder = (req, res) =>{
         } else {
             if (results1[0]) {
                 if (results1[0].buyerId === req.session.userId) {
-                    db.query(deleteSql, (error, results2) => {
-                        if (error) {
+                    db.query(deleteSql, (error2, results2) => {
+                        if (error2) {
                             resObj.error = "Couldn't get your request.";
                             res.send(resObj);
                         } else {
                             let selectAllOrdersSql = `SELECT p.orderId, paymentId, cardNumber, cardType, totalPaid, \`date\`, buyerId
                                 FROM \`craigslist\`.\`payment\` AS p, \`craigslist\`.\`order\` AS o
                                 WHERE p.orderId = o.orderId;`;
-                            db.query(selectAllOrdersSql, (er, results3) => {
-                                if (er) {
+                            db.query(selectAllOrdersSql, (error3, results3) => {
+                                if (error3) {
                                     resObj.error = "Couldn't get your request.";
                                 } else {
                                     resObj.colNames = ["orderId", "paymentId", "cardNumber", "cardType", "totalPaid", "date", "buyerId"];
