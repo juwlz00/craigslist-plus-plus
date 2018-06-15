@@ -144,7 +144,7 @@ const handleAvgCost = (req, res) => {
                 SELECT ${maxmin}(\`avgPrice\`)
                 FROM \`craigslist\`.\`avgCost\`
                 )
-                `
+                `;
     db.query(viewExistsSql, (error, results) => {
         if(error) {
             resObj.error = "Couldn't get your request.";
@@ -160,6 +160,7 @@ const handleAvgCost = (req, res) => {
                             resObj.error = "Couldn't get your request.";
                         } else {
                             resObj.colNames = ["name", "avgPrice"];
+                            resObj.sql = createViewSql + '</br>' + maxminSql;
                             resObj.results = results;
                         }
                         res.send(resObj);
@@ -202,6 +203,7 @@ const handleAvgStars = (req, res) => {
                         } else {
                             resObj.colNames = ["sellerId", "avgStars"];
                             resObj.results = results;
+                            resObj.sql = createViewSql + "</br>" + maxminSql;
                         }
                         res.send(resObj);
                     });

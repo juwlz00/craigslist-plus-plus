@@ -1,6 +1,9 @@
 const generateTable = (resObj) => {
-    const { colNames, results, error } = resObj;
+    const { colNames, results, error, sql } = resObj;
     let html = "";
+    if (sql) {
+        html += `<div class="alert alert-primary" role="alert">${sql}</div>`
+    }
     if (error) {
         html += `<div class="alert alert-danger" role="alert">${error}</div>`
     } else if (results && results.length > 0) {
