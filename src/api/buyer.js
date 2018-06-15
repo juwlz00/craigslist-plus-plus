@@ -6,11 +6,33 @@ const db = require("../database/connection");
 // Helpers
 const handleSearch = (req, res) => {
     let resObj = {};
-    let sql = `SELECT name, category, description, price, \`condition\`, sellerId AS seller
+    resObj.colNames = [];
+    let colSelection = ``;
+    if (typeof req.body.cols === "string") {
+        colSelection = `\`${req.body.cols}\``;
+        resObj.colNames.push(req.body.cols);
+    } else if (typeof req.body.cols === "object") {
+        let first = true;
+        req.body.cols.forEach((col) => {
+            if (first) {
+                colSelection += `\`${col}\``;
+                first = false;
+            } else {
+                colSelection += `, \`${col}\``;
+            }
+            resObj.colNames.push(col);
+        });
+    } else {
+        colSelection = `\`name\`, \`category\`, \`description\`, \`price\`, \`condition\`, \`sellerId\``;
+        resObj.colNames = ["name", "category", "description", "price", "condition", "sellerId"];
+    }
+    let sql = `SELECT ${colSelection}
         FROM \`craigslist\`.\`product\` AS p, \`craigslist\`.\`item\` AS i
         WHERE p.productId = i.productId`;
     for (let property in req.body) {
-        if (req.body[property] && req.body[property] !== "maxmin") {
+        if (req.body[property] &&
+            property !== "maxmin" &&
+            property !== "cols") {
             if (property === "price") {
                 if (req.body.maxmin === "max") {
                     sql += ` AND price<${req.body.price}`;
@@ -31,7 +53,6 @@ const handleSearch = (req, res) => {
         if (error) {
             resObj.error = "Couldn't get your request.";
         } else {
-            resObj.colNames = ["name", "category", "description", "price", "condition", "seller"];
             resObj.results = results;
         }
         res.send(resObj);
