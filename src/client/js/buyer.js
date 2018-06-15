@@ -28,6 +28,20 @@ $("#buyerReceipt").submit((event) => {
     });
 });
 
+$("#buyerReviewCheck").submit((event) => {
+    event.preventDefault();
+    $.ajax({
+        url: "/buyer/reviewcheck",
+        type: "GET",
+        data: $("#buyerReviewCheck").serialize(),
+        success: (response) => {
+            const resultHtml = generateTable(response);
+            $("#result").html(resultHtml);
+            $("#resultModal").modal();
+        }
+    });
+});
+
 $("#buyerInventory").submit((event) => {
     event.preventDefault();
     $.ajax({
@@ -80,20 +94,6 @@ $("#buyerDeleteOrder").submit((event) => {
             const resultHtml = generateTable(response);
             $("#result").html(resultHtml);
             $("#resultModal").modal();
-        }
-    });
-});
-
-$("#buyerReviewCheck").submit((event) => {
-    event.preventDefault();
-    $.ajax({
-        url: "/buyer/reviewcheck",
-        type: "POST",
-        data: $("#buyerReviewCheck").serialize(),
-        success: (response) => {
-            // const resultHtml = generateTable(response);
-            // $("#result").html(resultHtml);
-            // $("#resultModal").modal();
         }
     });
 });

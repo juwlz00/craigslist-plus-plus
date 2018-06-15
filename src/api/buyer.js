@@ -97,14 +97,20 @@ const handleReceipt = (req, res) => {
 
 const handleReviewCheck = (req, res) => {
     let resObj = {};
-    let sql;
-    // check to see if req.body.stars is string (typeof req.body.stars === "string")
-    // or array (type is object)
+    let sql = `SELECT s.userid AS sellerId FROM craigslist.seller s
+                WHERE NOT EXISTS
+                (SELECT b.userid
+                FROM craigslist.buyer b
+                WHERE NOT EXISTS
+                (SELECT r.stars
+                FROM craigslist.review r
+                WHERE s.userId = r.sellerId
+                AND b.userid = r.buyerId));`;
     db.query(sql, (error, results) => {
         if (error) {
             resObj.error = "Couldn't get your request.";
         } else {
-            resObj.colNames = [];
+            resObj.colNames = ["sellerId"];
             resObj.results = results;
         }
         res.send(resObj);
@@ -259,7 +265,7 @@ const handleDeleteOrder = (req, res) =>{
 // Buyer API Endpoints
 router.post("/buyer/search", handleSearch);
 router.post("/buyer/receipt", handleReceipt);
-router.post("/buyer/reviewcheck", handleReviewCheck);
+router.get("/buyer/reviewcheck", handleReviewCheck);
 router.get("/buyer/inventory", handleInventory);
 router.post("/buyer/avgcost", handleAvgCost);
 router.post("/buyer/avgstar", handleAvgStars);
