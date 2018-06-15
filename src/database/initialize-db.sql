@@ -33,7 +33,7 @@ CREATE TABLE `craigslist`.`review` (
 CREATE TABLE `craigslist`.`order`  (
   `orderId` VARCHAR(20),
   `totalPaid` FLOAT,
-  `date` VARCHAR(20),
+  `date` DATE,
   `buyerId` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`orderId`),
   FOREIGN KEY (`buyerId`) REFERENCES `craigslist`.`buyer`(`userId`)
