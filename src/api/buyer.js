@@ -41,7 +41,7 @@ const handleSearch = (req, res) => {
 
 const handleReceipt = (req, res) => {
     let resObj = {};
-    let paymentOrderSql = `SELECT o.orderId, \`date\`, cardNumber, cardType, totalPaid
+    let paymentOrderSql = `SELECT buyerId, o.orderId, \`date\`, cardNumber, cardType, totalPaid
         FROM \`craigslist\`.\`order\` AS o, \`craigslist\`.\`payment\` AS p
         WHERE o.orderId='${req.body.orderId}' AND o.orderId=p.orderId;`;
     let itemsSql = `SELECT itemId, \`name\`, description, sellerId AS seller, price
@@ -53,19 +53,40 @@ const handleReceipt = (req, res) => {
             res.send(resObj);
         } else {
             if (orderResults[0]) {
-                db.query(itemsSql, (error, resultItems) => {
-                    if (error) {
-                        resObj.error = "Couldn't get your request.";
-                    } else {
-                        orderResults[0].items = resultItems;
-                        resObj.results = orderResults;
-                    }
+                if (orderResults[0].buyerId !== req.session.userId) {
+                    resObj.error = "You do not have user access rights to this.";
                     res.send(resObj);
-                });
+                } else {
+                    db.query(itemsSql, (error, resultItems) => {
+                        if (error) {
+                            resObj.error = "Couldn't get your request.";
+                        } else {
+                            orderResults[0].items = resultItems;
+                            resObj.results = orderResults;
+                        }
+                        res.send(resObj);
+                    });
+                }
             } else {
                 res.send(resObj);
             }
         }
+    });
+};
+
+const handleReviewCheck = (req, res) => {
+    let resObj = {};
+    let sql;
+    // check to see if req.body.stars is string (typeof req.body.stars === "string")
+    // or array (type is object)
+    db.query(sql, (error, results) => {
+        if (error) {
+            resObj.error = "Couldn't get your request.";
+        } else {
+            resObj.colNames = [];
+            resObj.results = results;
+        }
+        res.send(resObj);
     });
 };
 
@@ -172,53 +193,54 @@ const handleAvgStars = (req, res) => {
 
 const handleDeleteOrder = (req, res) =>{
     let resObj = {};
-    let sql = `DELETE FROM \`craigslist\`.\`order\` WHERE \`orderId\` = '${req.body.delOrderId}';`;
-
-    db.query(sql, (error, results) => {
+    let checkOrderSql = `SELECT buyerId FROM \`craigslist\`.\`order\` WHERE orderId='${req.body.delOrderId}';`;
+    let deleteSql = `DELETE FROM \`craigslist\`.\`order\` WHERE \`orderId\` = '${req.body.delOrderId}';`;
+    db.query(checkOrderSql, (error, results1) => {
         if (error) {
             resObj.error = "Couldn't get your request.";
+            res.send(resObj);
         } else {
-            let selectSql = `SELECT p.orderId, paymentId, cardNumber, cardType, totalPaid, \`date\`, buyerId
-                            FROM \`craigslist\`.\`payment\` AS p, \`craigslist\`.\`order\` AS o
-                            WHERE p.orderId = o.orderId;`;
-            db.query(selectSql, (er, results2) => {
-                if (er) {
-                    resObj.error = "Couldn't get your request.";
+            if (results1[0]) {
+                if (results1[0].buyerId === req.session.userId) {
+                    db.query(deleteSql, (error, results2) => {
+                        if (error) {
+                            resObj.error = "Couldn't get your request.";
+                            res.send(resObj);
+                        } else {
+                            let selectAllOrdersSql = `SELECT p.orderId, paymentId, cardNumber, cardType, totalPaid, \`date\`, buyerId
+                                FROM \`craigslist\`.\`payment\` AS p, \`craigslist\`.\`order\` AS o
+                                WHERE p.orderId = o.orderId;`;
+                            db.query(selectAllOrdersSql, (er, results3) => {
+                                if (er) {
+                                    resObj.error = "Couldn't get your request.";
+                                } else {
+                                    resObj.colNames = ["orderId", "paymentId", "cardNumber", "cardType", "totalPaid", "date", "buyerId"];
+                                    resObj.results = results3;
+                                }
+                                res.send(resObj);
+                            });
+                        }
+                    });
                 } else {
-                    resObj.colNames = ["orderId", "paymentId", "cardNumber", "cardType", "totalPaid", "date", "buyerId"];
-                    resObj.results = results2;
+                    resObj.error = "You do not have user access rights to this.";
+                    res.send(resObj);
                 }
+            } else {
+                resObj.error = "There are no orders matching that Id.";
                 res.send(resObj);
-            });
+            }
         }
-    });
-
-};
-
-const handleReviewCheck = (req, res) => {
-    let resObj = {};
-    let sql;
-    // check to see if req.body.stars is string (typeof req.body.stars === "string")
-    // or array (type is object)
-    db.query(sql, (error, results) => {
-        if (error) {
-            resObj.error = "Couldn't get your request.";
-        } else {
-            resObj.colNames = [];
-            resObj.results = results;
-        }
-        res.send(resObj);
     });
 };
 
 // Buyer API Endpoints
 router.post("/buyer/search", handleSearch);
 router.post("/buyer/receipt", handleReceipt);
+router.post("/buyer/reviewcheck", handleReviewCheck);
 router.get("/buyer/inventory", handleInventory);
 router.post("/buyer/avgcost", handleAvgCost);
 router.post("/buyer/avgstar", handleAvgStars);
 router.post("/buyer/deleteorder", handleDeleteOrder);
-router.post("/buyer/reviewcheck", handleReviewCheck);
 
 // Buyer Index Page
 router.get("/buyer", (req, res) => {
