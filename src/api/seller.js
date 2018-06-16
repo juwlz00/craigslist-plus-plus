@@ -25,6 +25,7 @@ const handleRating = (req, res) => {
 
 const handleSellerUpdate = (req, res) => {
     let resObj = {};
+    let checkItemSql = `SELECT sellerId FROM \`craigslist\`.\`item\` WHERE itemId='${req.body.itemId}'`;
     let sql = `UPDATE \`craigslist\`.\`item\` SET`;
 
     let i = 0;
@@ -41,49 +42,82 @@ const handleSellerUpdate = (req, res) => {
     }
     sql += ` WHERE itemId = '${req.body.itemId}';`;
 
-    db.query(sql, (error) => {
-        if (error) {
+    db.query(checkItemSql, (error1, results1) => {
+        if (error1) {
             resObj.error = "Couldn't get your request.";
-            return res.send(resObj);
+            res.send(resObj);
         } else {
-            let selectItemsSql = `SELECT itemId, description, price, \`condition\`
+            if (results1[0]) {
+                if (results1[0].sellerId === req.session.userId) {
+                    db.query(sql, (error2, results2) => {
+                        if (error2) {
+                            resObj.error = "Couldn't get your request.";
+                            return res.send(resObj);
+                        } else {
+                            let selectItemsSql = `SELECT itemId, description, price, \`condition\`
                                     FROM \`craigslist\`.\`item\`
                                     WHERE itemId='${req.body.itemId}' AND sellerId = "${req.session.userId}";`;
-            db.query(selectItemsSql, (er, results) => {
-                if (er) {
-                    resObj.error = "Couldn't get your request.";
+                            db.query(selectItemsSql, (er, results3) => {
+                                if (er) {
+                                    resObj.error = "Couldn't get your request.";
+                                } else {
+                                    resObj.colNames = ["itemId", "description", "price", "condition"];
+                                    resObj.results = results3;
+                                }
+                                res.send(resObj);
+                            });
+                        }
+                    });
                 } else {
-                    resObj.colNames = ["itemId", "description", "price", "condition"];
-                    resObj.results = results;
+                    resObj.error = "You do not have user access rights to this.";
+                    res.send(resObj);
                 }
+            } else {
+                resObj.error = "There are no item matching that Id.";
                 res.send(resObj);
-            });
+            }
         }
     });
-
 };
 
 const handleSellerDelete = (req, res) => {
     let resObj = {};
+    let checkItemSql = `SELECT sellerId FROM \`craigslist\`.\`item\` WHERE itemId='${req.body.itemId}'`;
     let sql = `DELETE FROM \`craigslist\`.\`item\` WHERE itemId = '${req.body.itemId}' AND sellerId = "${req.session.userId}";`;
 
-    db.query(sql, (error, results) => {
-        if (error) {
+    db.query(checkItemSql, (error1, results1) => {
+        if (error1) {
             resObj.error = "Couldn't get your request.";
+            res.send(resObj);
         } else {
-            let selectSql = `SELECT itemid, description, price, \`condition\` FROM \`craigslist\`.\`item\`;`;
-            db.query(selectSql, (er, results2) => {
-                if (er) {
-                    resObj.error = "Couldn't get your request.";
+            if (results1[0]) {
+                if (results1[0].sellerId === req.session.userId) {
+                    db.query(sql, (error2, results2) => {
+                        if (error2) {
+                            resObj.error = "Couldn't get your request.";
+                        } else {
+                            let selectSql = `SELECT itemid, description, price, \`condition\` FROM \`craigslist\`.\`item\`;`;
+                            db.query(selectSql, (er, results3) => {
+                                if (er) {
+                                    resObj.error = "Couldn't get your request.";
+                                } else {
+                                    resObj.colNames = ["itemid", "description", "price", "condition"];
+                                    resObj.results = results3;
+                                }
+                                res.send(resObj);
+                            });
+                        }
+                    });
                 } else {
-                    resObj.colNames = ["itemid", "description", "price", "condition"];
-                    resObj.results = results2;
+                    resObj.error = "You do not have user access rights to this.";
+                    res.send(resObj);
                 }
+            } else {
+                resObj.error = "There are no item matching that Id.";
                 res.send(resObj);
-            });
+            }
         }
     });
-
 };
 
 // Seller API Endpoints
