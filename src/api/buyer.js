@@ -106,6 +106,8 @@ const handleReviewCheck = (req, res) => {
                 FROM craigslist.review r
                 WHERE s.userId = r.sellerId
                 AND b.userid = r.buyerId));`;
+    // run insert below to update division result
+    // INSERT INTO craigslist.`review` (reviewId, buyerId, sellerId, stars, description) VALUES('2828', 'Bradly', 'Sophie', '4', 'Very good product i went to buy more too');
     db.query(sql, (error, results) => {
         if (error) {
             resObj.error = "Couldn't get your request.";
