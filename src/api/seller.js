@@ -51,7 +51,11 @@ const handleSellerUpdate = (req, res) => {
                 if (results1[0].sellerId === req.session.userId) {
                     db.query(sql, (error2, results2) => {
                         if (error2) {
-                            resObj.error = "Couldn't get your request.";
+                            if (error2.sqlMessage === "Price has to be positive.") {
+                                resObj.error = "Item price has to be positive.";
+                            } else {
+                                resObj.error = "Couldn't get your request.";
+                            }
                             return res.send(resObj);
                         } else {
                             let selectItemsSql = `SELECT itemId, description, price, \`condition\`

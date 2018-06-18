@@ -68,7 +68,7 @@ CREATE TABLE `craigslist`.`item`  (
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   FOREIGN KEY (`orderId`) REFERENCES `craigslist`.`order`(`orderId`)
-  ON DELETE CASCADE
+  ON DELETE SET NULL
   ON UPDATE CASCADE);
 
 -- check constraint for "price" attribute in item table
@@ -96,6 +96,16 @@ FOR EACH ROW
 delimiter //
 CREATE TRIGGER `craigslist`.`totalPaid_insert_check`
 BEFORE INSERT ON `craigslist`.`order`
+FOR EACH ROW
+	IF NEW.totalPaid < 0.0 THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'Total paid has to be positive.';
+	END IF;
+//
+
+delimiter //
+CREATE TRIGGER `craigslist`.`totalPaid_insert_check`
+BEFORE UPDATE ON `craigslist`.`order`
 FOR EACH ROW
 	IF NEW.totalPaid < 0.0 THEN
 		SIGNAL SQLSTATE '45000'
@@ -351,7 +361,9 @@ BEGIN
 END;
 //
 
+delimiter //
 CALL `craigslist`.`insert_data`();
+//
 
 -- check all orders are associated with at least one item
 -- this is at the bottom so it doesn't interfere with initial insertion
