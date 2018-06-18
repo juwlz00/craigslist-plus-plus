@@ -103,6 +103,28 @@ FOR EACH ROW
 	END IF;
 //
 
+-- check sold item is not updated
+delimiter //
+CREATE TRIGGER `craigslist`.`item_sold_update_check`
+BEFORE UPDATE ON `craigslist`.`item`
+FOR EACH ROW
+	IF OLD.orderId IS NOT NULL THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'Item is sold.';
+	END IF;
+//
+
+-- check sold item is not deleted
+delimiter //
+CREATE TRIGGER `craigslist`.`item_sold_delete_check`
+BEFORE DELETE ON `craigslist`.`item`
+FOR EACH ROW
+	IF OLD.orderId IS NOT NULL THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'Item is sold.';
+	END IF;
+//
+
 delimiter //
 CREATE TRIGGER `craigslist`.`totalPaid_update_check`
 BEFORE UPDATE ON `craigslist`.`order`
@@ -330,3 +352,15 @@ END;
 //
 
 CALL `craigslist`.`insert_data`();
+
+-- check all orders are associated with at least one item
+-- this is at the bottom so it doesn't interfere with initial insertion
+delimiter //
+CREATE TRIGGER `craigslist`.`order_participation_check`
+BEFORE INSERT ON `craigslist`.`order`
+FOR EACH ROW
+	IF NOT EXISTS(SELECT itemId FROM `craigslist`.`item` i WHERE i.orderId=NEW.orderId) THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'Order Id is not associated with any items.';
+	END IF;
+//
