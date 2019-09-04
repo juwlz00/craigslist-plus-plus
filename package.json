@@ -1,20 +1,19 @@
 {
   "name": "craigslist-plus-plus",
   "version": "1.0.0",
-  "description": "",
+  "description": "Buy and Sell Store",
   "main": "app.js",
   "scripts": {
     "start": ". env.sh && node src/app.js",
-    "debug": ". env.sh && node --nolazy --inspect-brk=9229 src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "debug": ". env.sh && node --nolazy --inspect-brk=9229 src/app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "express-session": "^1.15.6",
-    "mysql": "^2.15.0",
-    "npm": "^6.1.0"
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "mysql": "^2.17.1",
+    "npm": "^6.11.3"
   }
 }
