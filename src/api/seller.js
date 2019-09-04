@@ -3,13 +3,15 @@ const express = require('express');
 const router = express.Router();
 const db = require("../database/connection");
 
-// Helpers
+// Endpoint Handlers
 const handleRating = (req, res) => {
     let resObj = {};
-    let sql = `SELECT \`sellerId\` AS seller, AVG(\`stars\`) AS stars
-                FROM \`craigslist\`.\`seller\` AS s, \`craigslist\`.\`buyer\` AS b, \`craigslist\`.\`review\` AS r
-                WHERE r.buyerId = b.userId AND r.sellerId = s.userId AND s.userId = "${req.session.userId}"
-                GROUP BY \`sellerId\`;`;
+    let sql = `
+        SELECT \`sellerId\` AS seller, AVG(\`stars\`) AS stars
+        FROM \`craigslist\`.\`seller\` AS s, \`craigslist\`.\`buyer\` AS b, \`craigslist\`.\`review\` AS r
+        WHERE r.buyerId = b.userId AND r.sellerId = s.userId AND s.userId = "${req.session.userId}"
+        GROUP BY \`sellerId\`;
+    `;
 
     db.query(sql, (error, results) => {
         if (error) {
@@ -35,7 +37,7 @@ const handleSellerUpdate = (req, res) => {
                 sql += ` \`${property}\`="${req.body[property]}"`;
                 i += 1;
             }
-            else{
+            else {
                 sql += ` AND \`${property}\`="${req.body[property]}"`;
             }
         }
@@ -58,9 +60,11 @@ const handleSellerUpdate = (req, res) => {
                             }
                             return res.send(resObj);
                         } else {
-                            let selectItemsSql = `SELECT itemId, description, price, \`condition\`
-                                    FROM \`craigslist\`.\`item\`
-                                    WHERE itemId='${req.body.itemId}' AND sellerId = "${req.session.userId}";`;
+                            let selectItemsSql = `
+                                SELECT itemId, description, price, \`condition\`
+                                FROM \`craigslist\`.\`item\`
+                                WHERE itemId='${req.body.itemId}' AND sellerId = "${req.session.userId}";
+                            `;
                             db.query(selectItemsSql, (er, results3) => {
                                 if (er) {
                                     resObj.error = "Couldn't get your request.";

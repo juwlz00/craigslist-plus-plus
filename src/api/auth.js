@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require("../database/connection");
 
-// Helpers
+// Endpoint Handlers
 const authenticate = (userId, password, userType, next) => {
     const userTable = userType === "buyer" ? "craigslist.buyer" : "craigslist.seller";
     const sql = `SELECT * FROM ${userTable} WHERE userId="${userId}"`;
